@@ -9,7 +9,7 @@
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
+      <canvas id="unity-canvas" width=960 height=600 tabindex="0"></canvas>
       <div id="unity-loading-bar">
         <div id="unity-logo"></div>
         <div id="unity-progress-bar-empty">
@@ -55,7 +55,7 @@
       var loaderUrl = buildUrl + "/252ff3c53fe736f1b846c01099a9d925.loader.js";
       var config = {
         arguments: [],
-        dataUrl: buildUrl + "/527ee4d2fa887d29c966728cd9b6acd2.data.unityweb",
+        dataUrl: buildUrl + "/9091cc4987c59948a34c025626b51e57.data.unityweb",
         frameworkUrl: buildUrl + "/a24ae086e178c9812d93c6deeefb36c5.framework.js.unityweb",
         codeUrl: buildUrl + "/36b4b40c8343794b2bf52ccc1b3dd132.wasm.unityweb",
         streamingAssetsUrl: "StreamingAssets",
@@ -120,6 +120,26 @@
                 document.querySelector("#unity-fullscreen-button").onclick = () => {
                   unityInstance.SetFullscreen(1);
                 };
+
+                // ── FIX GAMEPAD FOCUS (WebGL) ─────────────────────────────────────────
+                // El navegador filtra los eventos de Gamepad API si el <canvas> no tiene
+                // foco. tabindex="0" lo hace focusable; focus() lo activa inmediatamente.
+                // El listener 'gamepadconnected' refocaliza si el usuario conecta el mando
+                // después de que la página ya cargó.
+                canvas.setAttribute('tabindex', '0');
+                canvas.focus();
+
+                window.addEventListener('gamepadconnected', function(e) {
+                  canvas.focus();
+                  console.log('[Grace] Gamepad conectado: ' + e.gamepad.id + ' — canvas refocalizado.');
+                });
+
+                // Refocalizar el canvas si el usuario hace clic en cualquier parte
+                // de la página (por ejemplo, después de interactuar con el overlay de carga).
+                document.addEventListener('click', function() {
+                  if (document.activeElement !== canvas) canvas.focus();
+                }, { once: false });
+                // ─────────────────────────────────────────────────────────────────────
 
               }).catch((message) => {
                 alert(message);
