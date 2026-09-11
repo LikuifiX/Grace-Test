@@ -4,6 +4,12 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <!-- PWA: oculta barra de navegación al añadir a pantalla de inicio -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <link rel="manifest" href="manifest.webmanifest">
     <title>Unity Web Player | Grace</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
@@ -54,12 +60,12 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/8a470947e758ab3e596932c4f8a14653.loader.js";
+      var loaderUrl = buildUrl + "/f7c38e01554876294340fc297e72a05f.loader.js";
       var config = {
         arguments: [],
-        dataUrl: buildUrl + "/41ee9be255a0ba65fd7931a9423e3b9f.data.unityweb",
-        frameworkUrl: buildUrl + "/da02e39fe00e9f152338daf3ac58e289.framework.js.unityweb",
-        codeUrl: buildUrl + "/79329f988e2daf1fe192c1d2675e32a1.wasm.unityweb",
+        dataUrl: buildUrl + "/93d251f00ffecce0c42f7f8d8924c3be.data.unityweb",
+        frameworkUrl: buildUrl + "/81acc60409721935df8c7fe1209ebf8c.framework.js.unityweb",
+        codeUrl: buildUrl + "/4711dd251633c7a405b882da39b5261d.wasm.unityweb",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "LikuifiX",
         productName: "Grace",
@@ -140,6 +146,25 @@
                 // de la página (por ejemplo, después de interactuar con el overlay de carga).
                 document.addEventListener('click', function() {
                   if (document.activeElement !== canvas) canvas.focus();
+                }, { once: false });
+                // ─────────────────────────────────────────────────────────────────────
+
+                // ── MOBILE FULLSCREEN (Android Chrome) ────────────────────────────────
+                // Solicita pantalla completa en el primer toque del jugador.
+                // Requiere gesto del usuario — no se puede llamar en onload.
+                // iOS Safari no soporta requestFullscreen en browser normal;
+                // para iOS usar PWA (añadir a pantalla de inicio).
+                var fullscreenRequested = false;
+                canvas.addEventListener('touchstart', function() {
+                  if (fullscreenRequested) return;
+                  fullscreenRequested = true;
+                  var el = document.documentElement;
+                  var rfs = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen;
+                  if (rfs) {
+                    rfs.call(el).catch(function(err) {
+                      console.log('[Grace] Fullscreen no disponible: ' + err.message);
+                    });
+                  }
                 }, { once: false });
                 // ─────────────────────────────────────────────────────────────────────
 
