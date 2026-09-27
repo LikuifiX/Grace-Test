@@ -3,21 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, shrink-to-fit=no">
-    <!-- PWA: oculta barra de navegación al añadir a pantalla de inicio -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#000000">
-    <link rel="manifest" href="manifest.webmanifest">
     <title>Unity Web Player | Grace</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
-
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=960 height=600 tabindex="0" style="touch-action: none;"></canvas>
+      <canvas id="unity-canvas" width=960 height=600 tabindex="0"></canvas>
       <div id="unity-loading-bar">
         <div id="unity-logo"></div>
         <div id="unity-progress-bar-empty">
@@ -60,12 +52,12 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/fa06333a4f3afd0ab0da5eccdc3521f8.loader.js";
+      var loaderUrl = buildUrl + "/6802ee412e5881e5746b12bdd9c65476.loader.js";
       var config = {
         arguments: [],
-        dataUrl: buildUrl + "/af954fd139e09875cf5cc8e5429075ee.data.unityweb",
-        frameworkUrl: buildUrl + "/5ca9cbd07dc3f38d32de9f7f6f0673c7.framework.js.unityweb",
-        codeUrl: buildUrl + "/3fbce8f0bcc643e2e471e9b143249321.wasm.unityweb",
+        dataUrl: buildUrl + "/58042d48d27770c6dcae635eb631d670.data.unityweb",
+        frameworkUrl: buildUrl + "/1a74e633c93bfb97ea4b68affef67502.framework.js.unityweb",
+        codeUrl: buildUrl + "/654e11f84c054befab7604954840d51f.wasm.unityweb",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "LikuifiX",
         productName: "Grace",
@@ -146,25 +138,6 @@
                 // de la página (por ejemplo, después de interactuar con el overlay de carga).
                 document.addEventListener('click', function() {
                   if (document.activeElement !== canvas) canvas.focus();
-                }, { once: false });
-                // ─────────────────────────────────────────────────────────────────────
-
-                // ── MOBILE FULLSCREEN (Android Chrome) ────────────────────────────────
-                // Solicita pantalla completa en el primer toque del jugador.
-                // Requiere gesto del usuario — no se puede llamar en onload.
-                // iOS Safari no soporta requestFullscreen en browser normal;
-                // para iOS usar PWA (añadir a pantalla de inicio).
-                var fullscreenRequested = false;
-                canvas.addEventListener('touchstart', function() {
-                  if (fullscreenRequested) return;
-                  fullscreenRequested = true;
-                  var el = document.documentElement;
-                  var rfs = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen;
-                  if (rfs) {
-                    rfs.call(el).catch(function(err) {
-                      console.log('[Grace] Fullscreen no disponible: ' + err.message);
-                    });
-                  }
                 }, { once: false });
                 // ─────────────────────────────────────────────────────────────────────
 
